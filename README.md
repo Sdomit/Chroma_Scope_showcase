@@ -1,6 +1,6 @@
 <div align="center">
 
-# ChromaScope
+# 🎨 ChromaScope
 
 **Technical color-analysis tool for RGB spaces, transfer curves, gamut geometry, and diagnostic pipeline views.**
 
@@ -8,13 +8,13 @@
 [![Platform: Desktop + Web](https://img.shields.io/badge/Platform-Desktop%20%26%20Web-lightgrey?style=flat-square)]()
 [![Showcase](https://img.shields.io/badge/Source-Private%20Showcase-lightgrey?style=flat-square)]()
 
-> Private source — this repository is a project showcase.
+> 🔒 Private source — this repository is a project showcase.
 
 </div>
 
 ---
 
-## The Problem It Solves
+## 🎯 The Problem It Solves
 
 Most color tools either oversimplify or conflate distinct concepts under one label. ChromaScope is built around a stricter rule: **a gamut is not a transfer curve, a transfer curve is not a delivery system, and a pipeline diagram is not a rendered image.**
 
@@ -22,48 +22,48 @@ ChromaScope keeps those boundaries visible while still letting you compare every
 
 ---
 
-## What It Analyzes
+## 🔬 What It Analyzes
 
-- CIE gamut geometry and chromaticity relationships
-- RGB primaries, white points, and gamut fills
-- Transfer curves and log encodings — SDR, HDR, gamma, log, camera models
-- Chromatic adaptation (Bradford and others)
-- Pipeline roles and staged transform workflows
-- Image-based diagnostic transform previews with pixel inspection
+- 📐 CIE gamut geometry and chromaticity relationships
+- 🎨 RGB primaries, white points, and gamut fills
+- 📈 Transfer curves and log encodings — SDR, HDR, gamma, log, camera models
+- 🔄 Chromatic adaptation (Bradford and others)
+- 🔗 Pipeline roles and staged transform workflows
+- 🖼️ Image-based diagnostic transform previews with pixel inspection
 
 ### Concept Classes (kept explicitly distinct)
 
 | Class | Examples |
 |:---|:---|
-| Gamut / primaries | sRGB, Rec.2020, ACEScg, DCI-P3, camera gamuts |
-| Transfer functions | sRGB, PQ/ST 2084, HLG, ACEScc, ACEScct, BT.1886 |
-| Chromatic adaptation | Bradford, D65 ↔ D60, white-point shifts |
-| Pipeline stages | source encoding → working space → output transform → delivery |
-| Signal encodings | log, linear, scene-referred vs display-referred |
+| 🎨 Gamut / primaries | sRGB, Rec.2020, ACEScg, DCI-P3, camera gamuts |
+| 📈 Transfer functions | sRGB, PQ/ST 2084, HLG, ACEScc, ACEScct, BT.1886 |
+| 🔄 Chromatic adaptation | Bradford, D65 ↔ D60, white-point shifts |
+| 🔗 Pipeline stages | source encoding → working space → output transform → delivery |
+| 📡 Signal encodings | log, linear, scene-referred vs display-referred |
 
 ---
 
-## Viewer Modes
+## 🖥️ Viewer Modes
 
-**Gamut View** — Chromaticity geometry on CIE 1931 xy and CIE 1976 u'v'. Overlays: spectral locus, black-body locus, gamut fills, area comparisons.
+**🗺️ Gamut View** — Chromaticity geometry on CIE 1931 xy and CIE 1976 u'v'. Overlays: spectral locus, black-body locus, gamut fills, area comparisons.
 
-**Curve View** — Transfer behavior across curve families — forward and inverse, selectable axis contracts (signal, code values, linear, stops, or nits).
+**📈 Curve View** — Transfer behavior across curve families — forward and inverse, selectable axis contracts (signal, code values, linear, stops, or nits).
 
-**Dual View** — Gamut and curve analysis side by side without pretending they are the same property.
+**⚖️ Dual View** — Gamut and curve analysis side by side without pretending they are the same property.
 
-**Pipeline View** — Staged transform walkthrough: source encoding → working-space transform → adaptation → display transform → delivery context.
+**🔗 Pipeline View** — Staged transform walkthrough: source encoding → working-space transform → adaptation → display transform → delivery context.
 
-**Image Pipeline View** — A diagnostic chart previewed through a full source → target transform chain. Stages: Source, Linearized, Adapted, Target RGB, Encoded Preview. Overlays: Clean, Delta, Out of Gamut, Clipping.
+**🖼️ Image Pipeline View** — A diagnostic chart previewed through a full source → target transform chain. Overlays: Clean, Delta, Out of Gamut, Clipping.
 
-**CIE 3D Viewers** — Standalone CIE xyY and CIE XYZ 3D viewers. Interactive with drag-to-inspect, spectral locus, reference planes, and shared inspector panels.
+**🧊 CIE 3D Viewers** — Standalone CIE xyY and CIE XYZ 3D viewers. Interactive with drag-to-inspect, spectral locus, and reference planes.
 
-**Transform Compare** — Side-by-side source and target space picker with diagnostic output.
+**🔀 Transform Compare** — Side-by-side source and target space picker with diagnostic output.
 
-**Learning Mode** — Guided explanations tied to the active viewer context.
+**📚 Learning Mode** — Guided explanations tied to the active viewer context.
 
 ---
 
-## Screenshots
+## 📸 Screenshots
 
 **Workbench overview**
 ![Workbench overview](screenshots/01-workbench-overview.png)
@@ -85,7 +85,7 @@ ChromaScope keeps those boundaries visible while still letting you compare every
 
 ---
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 | Layer | Technology |
 |:---|:---|
@@ -96,44 +96,19 @@ ChromaScope keeps those boundaries visible while still letting you compare every
 | OCIO / ACES | OpenColorIO config integration |
 | UI components | shadcn/ui + custom design system |
 | Testing | Playwright end-to-end |
-| Build | Vite multi-page (`index.html`, `transform-compare.html`, `pipeline-lab.html`, `cie-3d-viewer.html`) |
 
 ---
 
-## Architecture
+## 👥 Who It's For
 
-```
-src/
-  features/       Feature modules — gamut, curves, adaptation, pipeline,
-                  image-pipeline, learning, catalog, export
-  lib/color/      Math library — matrix derivation, XYZ/xy/u'v' conversions,
-                  chromatic adaptation, curve modeling
-  components/     Shared UI — design system, charts, panels, inspector
-  pages/          Entry points per Vite page
-
-src-tauri/src/    Rust desktop shell (Tauri v2)
-e2e/              Playwright end-to-end test suite
-OCIO/             OpenColorIO + ACES config files
-```
-
-**Multi-page build** — each viewer mode is its own Vite entry point, keeping bundle sizes small and preventing cross-mode state leakage.
-
-**Feature-based structure** — each analysis domain owns its logic, state, and rendering. The shared math library is the only coupling between features.
-
-**Custom color math** — all intermediate values (XYZ matrices, adaptation matrices, per-channel curve tables) are built in-house so inspector panels can trace every result to the chart that shows it.
+- 🎨 Colorists and finishing artists comparing delivery targets
+- 🎬 VFX and CG artists working in ACES or ACEScg pipelines
+- 🔬 Imaging engineers validating transform behavior
+- ⚙️ Technical directors and pipeline developers
+- 📚 Students learning color science with a technically honest reference
 
 ---
 
-## Who It's For
+## 📊 Status
 
-- Colorists and finishing artists comparing delivery targets
-- VFX and CG artists working in ACES or ACEScg pipelines
-- Imaging engineers validating transform behavior
-- Technical directors and pipeline developers
-- Students learning color science with a technically honest reference
-
----
-
-## Status
-
-Active development. Private source — this repository is a project showcase.
+Active development. 🔒 Private source — this repository is a project showcase.
