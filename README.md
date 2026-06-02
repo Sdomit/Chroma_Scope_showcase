@@ -20,6 +20,8 @@ Most color tools either oversimplify or conflate distinct concepts under one lab
 
 ChromaScope keeps those boundaries visible while still letting you compare everything in one workspace.
 
+![Workbench overview](screenshots/01-workbench-overview.png)
+
 ---
 
 ## 🔬 What It Analyzes
